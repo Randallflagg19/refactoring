@@ -14,9 +14,6 @@ function volumeCreditsFor(perf){
     return result;
 }
 
-// объект пьесы соответствующий выступлению
-// берем из инвойсов перфоманс и для него выбираем пьесу
-
 function getPlay(aPerformance){
     return  plays[aPerformance.playID];
 }
@@ -53,27 +50,26 @@ function usd(aNumber){
         currency: "USD",
         minimumFractionDigits: 2,
     }).format(aNumber / 100)
-
 }
 
 function totalVolumeCredits(){
-    let volumeCredits = 0;
+    let result = 0;
 
     for (let perf of invoice.performances) {
-        volumeCredits += volumeCreditsFor(perf);
+        result += volumeCreditsFor(perf);
     }
 
-    return volumeCredits;
+    return result;
 }
 
-function appleSauce(){
-    let totalAmount = 0;
+function totalAmount(){
+    let result = 0;
 
     for (let perf of invoice.performances) {
-        totalAmount += priceFor(perf);
+        result += priceFor(perf);
     }
 
-    return totalAmount;
+    return result;
 }
 
 function statement(invoice) {
@@ -86,8 +82,7 @@ function statement(invoice) {
         result += ` ${usd(priceFor(perf))} (${perf.audience} мест)\n`;
     }
 
-    let totalAmount = appleSauce()
-    result += `Итого с вас ${usd(totalAmount / 100)}\n`;
+    result += `Итого с вас ${usd(totalAmount() / 100)}\n`;
     result += `Вы заработали ${totalVolumeCredits()} бонусов\n`;
     return result;
 }
